@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="kaa">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Muǵallimler aylıǵı — Esaplaw</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0d12; --panel:#12151d; --panel2:#171b25; --line:#252a37;
+    --text:#eef0f5; --muted:#8a91a3; --gold:#d8b46a; --gold2:#f3d99b;
+    --green:#5fd3a0; --red:#ff7a7a; --radius:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Manrope',system-ui,sans-serif;background:var(--bg);color:var(--text);
+    min-height:100vh;
+    background-image:
+      radial-gradient(900px 500px at 85% -10%, rgba(216,180,106,.13), transparent 60%),
+      radial-gradient(700px 400px at -10% 30%, rgba(95,130,255,.08), transparent 60%);
+  }
+  .wrap{max-width:1200px;margin:0 auto;padding:36px 24px 60px}
+  header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:30px}
+  .brand{display:flex;align-items:center;gap:14px}
+  .logo{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--gold2),var(--gold) 60%,#9c7a37);color:#1a1408;font-size:26px;
+    box-shadow:0 10px 30px rgba(216,180,106,.25)}
+  h1{font-family:'Playfair Display',serif;font-size:30px;letter-spacing:.3px}
+  h1 span{background:linear-gradient(90deg,var(--gold2),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{color:var(--muted);font-size:14px;margin-top:2px}
+  .badge{border:1px solid rgba(216,180,106,.35);color:var(--gold2);padding:8px 14px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;background:rgba(216,180,106,.06)}
+
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+  .stat{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;position:relative;overflow:hidden}
+  .stat::after{content:"";position:absolute;inset:auto -40px -60px auto;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(216,180,106,.12),transparent 70%)}
+  .stat .k{color:var(--muted);font-size:13px;font-weight:600}
+  .stat .v{font-size:26px;font-weight:800;margin-top:8px;letter-spacing:-.3px}
+  .stat.main .v{color:var(--gold2)}
+  .stat .h{color:var(--muted);font-size:12px;margin-top:4px}
+
+  .grid{display:grid;grid-template-columns:360px 1fr;gap:22px;align-items:start}
+  .card{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:var(--radius);padding:24px}
+  .card h2{font-size:17px;font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:10px}
+  .card h2 .dot{width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px var(--gold)}
+  label{display:block;font-size:13px;color:var(--muted);font-weight:600;margin:14px 0 7px}
+  input,select{width:100%;background:#0e1118;border:1px solid var(--line);color:var(--text);border-radius:12px;padding:12px 14px;font:inherit;font-size:15px;outline:none;transition:.2s}
+  input:focus,select:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(216,180,106,.12)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;cursor:pointer;font:inherit;font-weight:700;border-radius:12px;padding:13px 18px;transition:.2s}
+  .btn-gold{width:100%;margin-top:20px;background:linear-gradient(135deg,var(--gold2),var(--gold));color:#1a1408;box-shadow:0 10px 24px rgba(216,180,106,.22)}
+  .btn-gold:hover{transform:translateY(-1px);box-shadow:0 14px 30px rgba(216,180,106,.32)}
+  .btn-ghost{background:transparent;border:1px solid var(--line);color:var(--text);padding:10px 14px;font-size:14px}
+  .btn-ghost:hover{border-color:var(--gold);color:var(--gold2)}
+  .cancel{width:100%;margin-top:10px;display:none}
+
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+  .toolbar input{flex:1;min-width:180px}
+  .toolbar select{width:190px}
+  table{width:100%;border-collapse:collapse;font-size:14.5px}
+  th{text-align:left;color:var(--muted);font-weight:600;font-size:12.5px;text-transform:uppercase;letter-spacing:.8px;padding:12px 12px;border-bottom:1px solid var(--line);cursor:pointer;user-select:none;white-space:nowrap}
+  th:hover{color:var(--gold2)}
+  td{padding:14px 12px;border-bottom:1px solid rgba(37,42,55,.6)}
+  tr:hover td{background:rgba(216,180,106,.035)}
+  .who{display:flex;align-items:center;gap:12px}
+  .av{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-weight:800;font-size:13px;color:#1a1408;flex-shrink:0}
+  .name{font-weight:700}
+  .pill{display:inline-block;padding:5px 11px;border-radius:999px;font-size:12.5px;font-weight:600;background:rgba(255,255,255,.05);border:1px solid var(--line)}
+  .money{font-weight:800;white-space:nowrap}
+  .acts{display:flex;gap:6px;justify-content:flex-end}
+  .ic{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer;display:grid;place-items:center;transition:.2s}
+  .ic:hover{color:var(--gold2);border-color:var(--gold)}
+  .ic.del:hover{color:var(--red);border-color:var(--red)}
+  .empty{text-align:center;color:var(--muted);padding:50px 10px}
+  .empty .e{font-size:40px;margin-bottom:10px;opacity:.7}
+  tfoot td{font-weight:800;color:var(--gold2);border-bottom:0;padding-top:18px}
+
+  .subjects{margin-top:22px}
+  .bar{margin:12px 0}
+  .bar .t{display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:6px}
+  .bar .t b{font-weight:700}
+  .bar .t span{color:var(--muted)}
+  .track{height:8px;border-radius:99px;background:#0e1118;overflow:hidden}
+  .fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--gold),var(--gold2));transition:width .5s}
+
+  .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(30px);opacity:0;background:#1d2230;border:1px solid var(--gold);color:var(--gold2);padding:12px 20px;border-radius:12px;font-weight:600;transition:.3s;pointer-events:none;z-index:9}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  .modal{position:fixed;inset:0;background:rgba(5,6,10,.7);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:10;padding:20px}
+  .modal.show{display:flex}
+  .mbox{background:var(--panel2);border:1px solid var(--line);border-radius:var(--radius);padding:26px;max-width:380px;width:100%;box-shadow:0 30px 60px rgba(0,0,0,.5)}
+  .mtitle{font-weight:800;font-size:17px;margin-bottom:10px}
+  .mbox p{color:var(--muted);font-size:15px;margin-bottom:20px}
+  .mbtns{display:flex;gap:10px;justify-content:flex-end}
+  .mdel{background:var(--red);color:#2a0808;padding:10px 16px;font-size:14px}
+  @media(max-width:960px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:600px){.stats{grid-template-columns:1fr}.hide-sm{display:none}h1{font-size:24px}}
+  @media print{body{background:#fff;color:#000}.card:first-child,.toolbar,.acts,.badge,.subjects-card{display:none}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="logo">✦</div>
+      <div>
+        <h1>Muǵallimler <span>aylıǵı</span></h1>
+        <div class="sub">Aylıq tólemlerdi esaplaw hám esapqa alıw</div>
+      </div>
+    </div>
+    <div class="badge">★ Premium</div>
+  </header>
+
+  <section class="stats">
+    <div class="stat main"><div class="k">Ulıwma aylıq fondı</div><div class="v" id="sTotal">0</div><div class="h">bir aylıq jámi summa</div></div>
+    <div class="stat"><div class="k">Muǵallimler sanı</div><div class="v" id="sCount">0</div><div class="h" id="sSubj">0 pán</div></div>
+    <div class="stat"><div class="k">Ortasha aylıq</div><div class="v" id="sAvg">0</div><div class="h">bir muǵallimge</div></div>
+    <div class="stat"><div class="k">Eń joqarı aylıq</div><div class="v" id="sMax">0</div><div class="h" id="sMaxWho">—</div></div>
+  </section>
+
+  <div class="grid">
+    <div>
+      <div class="card">
+        <h2><span class="dot"></span><span id="formTitle">Jańa muǵallim qosıw</span></h2>
+        <form id="form" autocomplete="off">
+          <div class="row2">
+            <div><label>Atı</label><input id="fName" required placeholder="Mısalı: Gúlnara"></div>
+            <div><label>Familiyası</label><input id="fSurname" required placeholder="Mısalı: Seytova"></div>
+          </div>
+          <label>Pán</label>
+          <input id="fSubject" list="subjectList" required placeholder="Pándi saylań yamasa jazıń">
+          <datalist id="subjectList"></datalist>
+          <label>Aylıq summası (swm)</label>
+          <input id="fSalary" required inputmode="numeric" placeholder="Mısalı: 4 500 000">
+          <button class="btn btn-gold" type="submit" id="submitBtn">＋ Qosıw</button>
+          <button class="btn btn-ghost cancel" type="button" id="cancelBtn">Biykar etiw</button>
+        </form>
+      </div>
+
+      <div class="card subjects subjects-card">
+        <h2><span class="dot"></span>Pánler boyınsha</h2>
+        <div id="bars"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2><span class="dot"></span>Muǵallimler dizimi</h2>
+      <div class="toolbar">
+        <input id="search" placeholder="🔍  Atı yamasa familiyası boyınsha izlew">
+        <select id="filter"><option value="">Barlıq pánler</option></select>
+        <button class="btn btn-ghost" id="csvBtn" title="Excel ushın CSV">⬇ CSV</button>
+        <button class="btn btn-ghost" id="printBtn">🖨 Baspa</button>
+      </div>
+      <div style="overflow-x:auto">
+        <table>
+          <thead>
+            <tr>
+              <th data-sort="surname">Muǵallim</th>
+              <th data-sort="subject">Pán</th>
+              <th data-sort="salary" style="text-align:right">Aylıq</th>
+              <th class="hide-sm"></th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+          <tfoot id="tfoot"></tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<div class="modal" id="modal"><div class="mbox">
+  <div class="mtitle">Óshiriwdi tastıyıqlaw</div>
+  <p id="mText"></p>
+  <div class="mbtns"><button class="btn btn-ghost" id="mNo">Biykar etiw</button><button class="btn mdel" id="mYes">Óshiriw</button></div>
+</div></div>
+
+<script>
+const KEY = 'mugallim_ayliq_v1';
+const DEFAULT_SUBJECTS = ['Matematika','Qaraqalpaq tili','Ana tili hám ádebiyat','Orıs tili','Ingliz tili','Fizika','Ximiya','Biologiya','Geografiya','Tariyx','Informatika','Dene tárbiyası','Muzıka','Súwretlew óneri','Texnologiya','Baslawısh klass'];
+const COLORS = ['#f3d99b','#9fd8ff','#b9f3c9','#ffc1a6','#d7c2ff','#ffe39a','#a6f0ea','#ffb3c7'];
+
+let list = [];
+try { list = JSON.parse(localStorage.getItem(KEY) || '[]'); } catch (e) {}
+let editId = null, sortKey = 'surname', sortDir = 1;
+const $ = id => document.getElementById(id);
+
+const fmt = n => Math.round(n).toLocaleString('ru-RU').replace(/,/g,' ') + ' swm';
+const parseNum = s => Number(String(s).replace(/[^\d.]/g,'')) || 0;
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(list)); } catch (e) {} };
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const colorOf = s => COLORS[[...s].reduce((a,c)=>a+c.charCodeAt(0),0) % COLORS.length];
+
+function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),2200); }
+
+$('fSalary').addEventListener('input', e => {
+  const n = parseNum(e.target.value);
+  e.target.value = n ? n.toLocaleString('ru-RU').replace(/,/g,' ') : '';
+});
+
+$('form').addEventListener('submit', e => {
+  e.preventDefault();
+  const item = {
+    name: $('fName').value.trim(),
+    surname: $('fSurname').value.trim(),
+    subject: $('fSubject').value.trim(),
+    salary: parseNum($('fSalary').value)
+  };
+  if (!item.salary) { toast('Aylıq summasın kirgiziń'); return; }
+  if (editId) {
+    Object.assign(list.find(x => x.id === editId), item);
+    toast('Maǵlıwmat ózgertildi');
+  } else {
+    list.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2,6), ...item });
+    toast('Muǵallim qosıldı');
+  }
+  save(); resetForm(); render();
+});
+
+$('cancelBtn').onclick = resetForm;
+function resetForm(){
+  editId = null; $('form').reset();
+  $('formTitle').textContent = 'Jańa muǵallim qosıw';
+  $('submitBtn').textContent = '＋ Qosıw';
+  $('cancelBtn').style.display = 'none';
+}
+
+function edit(id){
+  const x = list.find(i => i.id === id); if (!x) return;
+  editId = id;
+  $('fName').value = x.name; $('fSurname').value = x.surname;
+  $('fSubject').value = x.subject;
+  $('fSalary').value = x.salary.toLocaleString('ru-RU').replace(/,/g,' ');
+  $('formTitle').textContent = 'Maǵlıwmattı ózgertiw';
+  $('submitBtn').textContent = '✓ Saqlaw';
+  $('cancelBtn').style.display = 'flex';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function del(id){
+  const x = list.find(i => i.id === id); if (!x) return;
+  $('mText').textContent = `${x.name} ${x.surname} dizimnen óshirilsin be?`;
+  $('modal').classList.add('show');
+  $('mYes').onclick = () => {
+    $('modal').classList.remove('show');
+    list = list.filter(i => i.id !== id);
+    if (editId === id) resetForm();
+    save(); render(); toast('Óshirildi');
+  };
+}
+$('mNo').onclick = () => $('modal').classList.remove('show');
+
+document.querySelectorAll('th[data-sort]').forEach(th => th.onclick = () => {
+  const k = th.dataset.sort;
+  sortDir = sortKey === k ? -sortDir : 1; sortKey = k; render();
+});
+$('search').oninput = render;
+$('filter').onchange = render;
+
+function render(){
+  const subjects = [...new Set([...DEFAULT_SUBJECTS, ...list.map(x => x.subject)])];
+  $('subjectList').innerHTML = subjects.map(s => `<option value="${esc(s)}">`).join('');
+  const used = [...new Set(list.map(x => x.subject))].sort();
+  const cur = $('filter').value;
+  $('filter').innerHTML = '<option value="">Barlıq pánler</option>' + used.map(s => `<option ${s===cur?'selected':''}>${esc(s)}</option>`).join('');
+
+  const total = list.reduce((a,x) => a + x.salary, 0);
+  const top = list.reduce((m,x) => !m || x.salary > m.salary ? x : m, null);
+  $('sTotal').textContent = fmt(total);
+  $('sCount').textContent = list.length;
+  $('sSubj').textContent = used.length + ' pán';
+  $('sAvg').textContent = fmt(list.length ? total / list.length : 0);
+  $('sMax').textContent = fmt(top ? top.salary : 0);
+  $('sMaxWho').textContent = top ? `${top.name} ${top.surname}` : '—';
+
+  const q = $('search').value.trim().toLowerCase();
+  const f = $('filter').value;
+  let rows = list.filter(x =>
+    (!f || x.subject === f) &&
+    (!q || `${x.name} ${x.surname}`.toLowerCase().includes(q))
+  );
+  rows.sort((a,b) => {
+    const A = a[sortKey], B = b[sortKey];
+    return (typeof A === 'number' ? A - B : String(A).localeCompare(B)) * sortDir;
+  });
+
+  $('tbody').innerHTML = rows.length ? rows.map(x => `
+    <tr>
+      <td><div class="who"><div class="av" style="background:${colorOf(x.subject)}">${esc((x.name[0]||'')+(x.surname[0]||'')).toUpperCase()}</div>
+        <div><div class="name">${esc(x.name)} ${esc(x.surname)}</div></div></div></td>
+      <td><span class="pill">${esc(x.subject)}</span></td>
+      <td class="money" style="text-align:right">${fmt(x.salary)}</td>
+      <td><div class="acts">
+        <button class="ic" title="Ózgertiw" onclick="edit('${x.id}')">✎</button>
+        <button class="ic del" title="Óshiriw" onclick="del('${x.id}')">✕</button>
+      </div></td>
+    </tr>`).join('')
+    : `<tr><td colspan="4"><div class="empty"><div class="e">📋</div>${list.length ? 'Hesh nárse tabılmadı' : 'Házirshe muǵallim qosılmaǵan. Shep tárepten birinshi muǵallimdi qosıń.'}</div></td></tr>`;
+
+  const shown = rows.reduce((a,x) => a + x.salary, 0);
+  $('tfoot').innerHTML = rows.length ? `<tr><td>Jámi: ${rows.length} muǵallim</td><td></td><td style="text-align:right">${fmt(shown)}</td><td class="hide-sm"></td></tr>` : '';
+
+  const by = {};
+  list.forEach(x => { by[x.subject] = by[x.subject] || { sum:0, n:0 }; by[x.subject].sum += x.salary; by[x.subject].n++; });
+  const ent = Object.entries(by).sort((a,b) => b[1].sum - a[1].sum);
+  const max = ent.length ? ent[0][1].sum : 1;
+  $('bars').innerHTML = ent.length ? ent.map(([s,v]) => `
+    <div class="bar"><div class="t"><b>${esc(s)} <span>· ${v.n}</span></b><span>${fmt(v.sum)}</span></div>
+    <div class="track"><div class="fill" style="width:${v.sum/max*100}%"></div></div></div>`).join('')
+    : '<div style="color:var(--muted);font-size:14px">Maǵlıwmat joq</div>';
+}
+
+$('csvBtn').onclick = () => {
+  if (!list.length) { toast('Dizim bos'); return; }
+  const lines = [['Atı','Familiyası','Pán','Aylıq (swm)'], ...list.map(x => [x.name, x.surname, x.subject, x.salary])];
+  const csv = '﻿' + lines.map(r => r.map(v => `"${String(v).replace(/"/g,'""')}"`).join(';')).join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], { type:'text/csv;charset=utf-8' }));
+  a.download = 'mugallimler_ayliq.csv'; a.click();
+};
+$('printBtn').onclick = () => window.print();
+
+render();
+</script>
+</body>
+</html>
